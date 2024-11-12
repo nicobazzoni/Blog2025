@@ -14,7 +14,7 @@ function Home() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-4xl font-bold text-gray-800 mb-6">Blog</h1>
+      <h1 className="text-4xl font-bold text-gray-800 mb-6"></h1>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
           <Link to={`/post/${post.slug.current}`} key={post.slug.current} className="block rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
