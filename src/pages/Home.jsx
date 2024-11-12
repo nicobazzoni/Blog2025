@@ -2,8 +2,8 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect, Suspense } from 'react';
 import sanityClient, { urlFor } from '/blog2025/sanityClient.js';
-import EyeModel from '/Users/nico/blog2025/src/components/Eye.jsx';
-import Human from '/Users/nico/blog2025/src/components/Human.jsx'
+import EyeModel from '../components/Eye';
+
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 
