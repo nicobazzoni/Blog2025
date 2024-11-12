@@ -5,6 +5,7 @@ import BlogPost from './pages/BlogPost';
 import Header from './components/Header';  // Import the Header component
 import About from './pages/About';
 import Contact from './pages/Contact';
+import VideoLinks from './components/VideoLinks';
 function App() {
   return (
     <Router>
@@ -15,6 +16,7 @@ function App() {
           <Route path="/post/:slug" element={<BlogPost />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/websites" element={<VideoLinks />} />
         </Routes>
       </div>
     </Router>

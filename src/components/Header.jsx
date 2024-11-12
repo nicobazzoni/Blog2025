@@ -12,12 +12,16 @@ function Header() {
           <Link to="/" className="hover:text-gray-300">
             Home
           </Link>
+          <Link to="/websites" className="hover:text-gray-300">
+            Websites
+          </Link>
           <Link to="/about" className="hover:text-gray-300">
             About
           </Link>
           <Link to="/contact" className="hover:text-gray-300">
             Contact
           </Link>
+          
           {/* Add more links as needed for future sections */}
         </nav>
       </div>
