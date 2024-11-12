@@ -12,7 +12,7 @@ function Model(props) {
     // Rotate the model continuously
     useFrame(() => {
       if (modelRef.current) {
-        modelRef.current.rotation.y += 0.01; // Adjust the rotation speed as desired
+        modelRef.current.rotation.y += 0.0035; // Adjust the rotation speed as desired
       }
     });
   

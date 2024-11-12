@@ -3,11 +3,19 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect, Suspense } from 'react';
 import sanityClient, { urlFor } from '/blog2025/sanityClient.js';
 import EyeModel from '/Users/nico/blog2025/src/components/Eye.jsx';
+import Human from '/Users/nico/blog2025/src/components/Human.jsx'
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 
 function Home() {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  }, []);
 
   useEffect(() => {
     sanityClient
@@ -21,9 +29,11 @@ function Home() {
      
       
       {/* Blog Posts */}
+      <h1 className="text-1xl font-italic mb-1 text-gray-800">reads</h1>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      <div className=" mt-2 border-2 border-whitesmoke"></div>
-      <h1 className="text-1xl font-italic text-gray-800 mb-2">reads</h1>
+      
+      
+     
         {posts.map((post) => (
           <Link to={`/post/${post.slug.current}`} key={post.slug.current} className="block rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
             {post.mainImage && (
@@ -36,18 +46,25 @@ function Home() {
         ))}
       </div>
 
-      {/* 3D Eye Model */}
-      <div className="mb-2 mt-2 border-2 border-whitesmoke"></div>
-      <h1 className="text-1xl font-italic text-gray-800 mb-6">impressions</h1>
+      
+
+      <h1 className="text-1xl mt-2 font-italic text-gray-800 mb-1">impressions</h1>
+     
       <div className="mb-8">
 
       <div>
      
         <EyeModel />
+
+     
+       
         
    
     </div>
+
+   
       </div>
+      
     </div>
   );
 }
