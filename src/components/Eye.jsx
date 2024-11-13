@@ -10,11 +10,11 @@ function Model(props) {
     const modelRef = useRef();
   
     // Rotate the model continuously
-    useFrame(() => {
-      if (modelRef.current) {
-        modelRef.current.rotation.y += 0.0035; // Adjust the rotation speed as desired
-      }
-    });
+    // useFrame(() => {
+    //   if (modelRef.current) {
+    //     modelRef.current.rotation.y += 0.0035; // Adjust the rotation speed as desired
+    //   }
+    // });
   
     return <primitive ref={modelRef} object={scene} scale={0.01} {...props} />;
   }
@@ -22,7 +22,7 @@ function Model(props) {
 function Eye() {
 
 return (
-  <Canvas dpr={[1,2]} shadows camera={{ fov: 45}} style={{"position": "absolute"}} >
+  <Canvas  dpr={[1,2]} shadows camera={{ fov: 45}} style={{"position": "absolute"}} >
     <color attach="background" args={["#fff"]} />  
     <PresentationControls speed={1.5} global zoom={.5} polar={[-0.1, Math.PI / 4]}>
     <Stage environemnt={null}>

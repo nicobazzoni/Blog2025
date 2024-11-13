@@ -35,7 +35,7 @@ const SongList = () => {
   }, []);
 
   return (
-    <div className='p-2 bg-black-200'>
+    <div className=' p-2 bg-black-200'>
       <h2 className='font-mono mb-1'>Latest Nicoroc Music</h2>
       <ul>
         {songs.map((song, index) => (
@@ -49,7 +49,7 @@ const SongList = () => {
             )}
             <div>
               <h3>{song.title}</h3>
-              <audio controls src={song.url}>
+              <audio className='-z-2 ' controls src={song.url}>
                 Your browser does not support the audio tag.
               </audio>
             </div>

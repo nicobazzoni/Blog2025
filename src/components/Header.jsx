@@ -42,7 +42,7 @@ function Header() {
         <nav
           className={`${
             menuOpen ? 'block' : 'hidden'
-          } md:flex space-x-4 absolute md:static top-16 left-0 w-full md:w-auto bg-gray-500  md:bg-transparent text-center md:text-left`}
+          } md:flex space-x-4 absolute  z-50 md:static top-16 left-0 w-full md:w-auto bg-gray-500  md:bg-transparent text-center md:text-left`}
         >
           <Link to="/" className="block md:inline-block px-4 py-2 text-black hover:text-gray-300">
             Home
