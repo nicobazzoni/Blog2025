@@ -12,13 +12,19 @@ export default {
       type: 'string',
     },
     {
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
-      options: {
-        source: 'title',
-        maxLength: 96,
-      },
+        name: 'slug',
+        title: 'Slug',
+        type: 'slug',
+        options: {
+          source: 'title', // Automatically generate from the title
+          maxLength: 96,
+          slugify: input => input
+            .toLowerCase()
+            .replace(/\s+/g, '-')        // Replace spaces with dashes
+            .replace(/[^\w\-]+/g, '')    // Remove all non-word characters
+            .replace(/\-\-+/g, '-')      // Replace multiple dashes with a single dash
+            .trim()
+        },
     },
     {
       name: 'mainImage',
