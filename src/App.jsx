@@ -6,6 +6,7 @@ import Header from './components/Header';  // Import the Header component
 import About from './pages/About';
 import Contact from './pages/Contact';
 import VideoLinks from './components/VideoLinks';
+import SongList from './components/SongList';
 function App() {
   return (
     <Router>
@@ -17,6 +18,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/websites" element={<VideoLinks />} />
+          <Route path='/music' element={<SongList />} />
         </Routes>
       </div>
     </Router>

@@ -50,6 +50,9 @@ function Header() {
           <Link to="/websites" className="block md:inline-block px-4 py-2 text-black hover:text-gray-300">
             Websites
           </Link>
+          <Link to="/music" className="block md:inline-block px-4 py-2 text-black hover:text-gray-300">
+            Music
+          </Link>
           <Link to="/about" className="block md:inline-block px-4 py-2 text-black hover:text-gray-300">
             About
           </Link>
