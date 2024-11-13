@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import sanityClient from '/Users/nico/blog2025/blog2025/sanityClient.js'
+import sanityClient from '../../blog2025/sanityClient.js'
 import imageUrlBuilder from '@sanity/image-url';
 
 const builder = imageUrlBuilder(sanityClient);
