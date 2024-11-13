@@ -52,18 +52,12 @@ function Home() {
      
       <div className="mb-8">
 
-      <div>
+     
      
         <EyeModel />
 
      
-       
-        
-   
     </div>
-
-   
-      </div>
       
     </div>
   );
