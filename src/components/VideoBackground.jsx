@@ -9,6 +9,7 @@ export default function Home() {
         muted
         loop
         playsInline
+        loading="lazy"
         className="absolute inset-0 h-full w-full object-cover"
       >
         <source src="https://storage.googleapis.com/new-music/119527-718118183_small.mp4" type="video/mp4" />
