@@ -10,7 +10,7 @@ import SongList from './components/SongList';
 function App() {
   return (
     <Router>
-      <div className="font-sans bg-gray-100 min-h-screen">
+      <div className="font-sans bg-gray-100 min-h-screen overflow-x-hidden ">
         <Header /> {/* Include the Header component here */}
         <Routes>
           <Route path="/" element={<Home />} />
