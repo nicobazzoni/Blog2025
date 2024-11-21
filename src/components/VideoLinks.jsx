@@ -22,7 +22,7 @@ function VideoLinks() {
               <p className="text-gray-600 mb-4">{link.description}</p>
             </div>
           </a>
-          <video controls autoPlay muted loop  className="w-full mt-4">
+          <video playsInline controls autoPlay muted loop  className="w-full mt-4">
             <source src={link.videoPath} type="video/mp4"  />
             Your browser does not support the video tag.
           </video>
