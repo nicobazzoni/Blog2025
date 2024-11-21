@@ -37,7 +37,10 @@ function Home() {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div style={{
+      overflowX: 'hidden',
+      width: '100vw',
+    }} className="container mx-auto p-4">
       <h1 className="text-1xl font-italic mb-1 text-gray-800">Reads</h1>
       <div className="grid gap-6 md:grid-cols-2 mb-3 lg:grid-cols-3">
         {posts.map((post) => (
@@ -74,10 +77,7 @@ function Home() {
         Interact
       </h1>
       <div
-  style={{
-    overflowX: 'hidden',
-    width: '100vw',
-  }}
+  
 >
         <EyeModel />
       </div>
