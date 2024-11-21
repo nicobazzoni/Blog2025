@@ -73,7 +73,12 @@ function Home() {
       <h1 className="text-1xl mt-2 font-italic text-gray-800 mb-1">
         Interact
       </h1>
-      <div className="h-1/2">
+      <div
+  style={{
+    overflowX: 'hidden',
+    width: '100vw',
+  }}
+>
         <EyeModel />
       </div>
     </div>
