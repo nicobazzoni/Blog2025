@@ -47,6 +47,9 @@ function Header() {
           <Link to="/" className="block md:inline-block px-4 py-2 text-black hover:text-gray-300">
             Home
           </Link>
+          <Link to="/blog" className="block md:inline-block px-4 py-2 text-black hover:text-gray-300">
+            Blog
+          </Link>
           <Link to="/websites" className="block md:inline-block px-4 py-2 text-black hover:text-gray-300">
             Websites
           </Link>

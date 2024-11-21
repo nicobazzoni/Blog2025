@@ -7,6 +7,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import VideoLinks from './components/VideoLinks';
 import SongList from './components/SongList';
+import BlogPage from './pages/BlogPage';
 function App() {
   return (
     <Router>
@@ -19,6 +20,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/websites" element={<VideoLinks />} />
           <Route path='/music' element={<SongList />} />
+          <Route path='/blog' element={<BlogPage/>}/>
         </Routes>
       </div>
     </Router>
