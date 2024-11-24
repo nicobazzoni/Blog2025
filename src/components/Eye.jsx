@@ -22,7 +22,7 @@ function Model(props) {
 function Eye() {
 
 return (
-  <Canvas  dpr={[1,2]} shadows camera={{ fov: 45}} style={{"position": "absolute"}} >
+  <Canvas className=""  dpr={[1,2]} shadows camera={{ fov: 45}} style={{"position": "absolute"}} >
     <color attach="background" args={["#fff"]} />  
     <PresentationControls speed={1.5} global zoom={.5} polar={[-0.1, Math.PI / 4]}>
     <Stage environemnt={null}>

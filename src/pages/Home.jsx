@@ -40,6 +40,12 @@ function Home() {
 
       {/* Content Overlay */}
       <div className="relative z-10 container mx-auto p-4">
+        <button>
+        <Link to='/subscribe'
+        className="block rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+
+        </Link>
+        </button>
         <div className="my-8">
           <h2 className="text-2xl font-bold text-white mb-4">Latest Blog Posts</h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -78,9 +84,10 @@ function Home() {
         </div>
 
         <h1 className="text-xl mt-2 font-italic text-white mb-1">Interact</h1>
-        <div>
-          <EyeModel />
+        <div style={{ height: "50vh", width: "100%" }}>
+          <EyeModel className='h-1/2' />
         </div>
+       
       </div>
     </div>
   );

@@ -8,6 +8,8 @@ import Contact from './pages/Contact';
 import VideoLinks from './components/VideoLinks';
 import SongList from './components/SongList';
 import BlogPage from './pages/BlogPage';
+import SubscribeForm from './pages/Subscribe';
+import Unsubscribe from './pages/Unsubscribe';
 function App() {
   return (
     <Router>
@@ -21,6 +23,9 @@ function App() {
           <Route path="/websites" element={<VideoLinks />} />
           <Route path='/music' element={<SongList />} />
           <Route path='/blog' element={<BlogPage/>}/>
+          <Route path='/subscribe' element={<SubscribeForm/>}/>
+          <Route path='/unsubscribe' element={<Unsubscribe/>} />
+
         </Routes>
       </div>
     </Router>
