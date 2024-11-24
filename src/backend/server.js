@@ -46,6 +46,45 @@ app.use((req, res, next) => {
 // Parse incoming JSON payloads
 app.use(bodyParser.json());
 
+app.use((req, res, next) => {
+    const allowedHost = 'www.nicosblog.com';
+    const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+  
+    // Redirect to the allowed host if necessary
+    if (req.hostname !== allowedHost) {
+      return res.redirect(301, `https://${allowedHost}${req.originalUrl}`);
+    }
+  
+    next();
+  });
+  app.use((req, res, next) => {
+    if (req.path.substr(-1) === '/' && req.path.length > 1) {
+      const query = req.url.slice(req.path.length);
+      res.redirect(301, req.path.slice(0, -1) + query);
+    } else {
+      next();
+    }
+  });
+  app.use((req, res, next) => {
+    const preferredDomain = 'www.nicosblog.com';
+  
+    // Redirect non-preferred domain
+    if (req.hostname !== preferredDomain) {
+      // Allow preflight requests to proceed before redirecting
+      if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+        res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        return res.status(204).end(); // End response for preflight
+      }
+  
+      // Redirect to preferred domain
+      return res.redirect(308, `https://${preferredDomain}${req.originalUrl}`);
+    }
+  
+    next();
+  });
+
 // Configure Sanity Client
 const client = createClient({
   projectId: process.env.SANITY_PROJECT_ID, // Your Sanity project ID
