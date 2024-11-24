@@ -12,6 +12,26 @@ const app = express();
 // Allowed Origins
 const allowedOrigins = ['https://nicosblog.com', 'https://www.nicosblog.com'];
 
+app.use((req, res, next) => {
+    console.log('--- CORS Debugging ---');
+    console.log('Request Origin:', req.headers.origin);
+    console.log('Request URL:', req.url);
+    console.log('Request Method:', req.method);
+    console.log('Headers:', req.headers);
+  
+    // Add CORS headers for debugging
+    res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+  
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(204); // Preflight response
+    }
+  
+    next();
+  });
+
 // CORS Setup
 app.use(cors({
   origin: (origin, callback) => {
