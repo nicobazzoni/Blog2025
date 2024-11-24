@@ -9,9 +9,12 @@ function SubscribeForm() {
     e.preventDefault();
 
     try {
-      const response = await fetch('https://nicosblog.com/backend/server', {
+      const response = await fetch('https://www.nicosblog.com/backend/server', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // Send credentials (if needed)
         body: JSON.stringify({ name, email }),
       });
 
