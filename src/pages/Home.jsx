@@ -4,6 +4,7 @@ import sanityClient, { urlFor } from '/blog2025/sanityClient.js';
 import VideoBackground from '../components/VideoBackground';
 import DrawingSlideshow from '../components/DrawingSlideShow';
 import EyeModel from '../components/Eye';
+import Footer from '../components/Footer';
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -42,12 +43,12 @@ function Home() {
       <div className="relative z-10 container mx-auto p-4">
         <button>
         <Link to='/subscribe'
-        className="block rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-
+        className="block  shadow-lg p-2 rounded-full font-light overflow-hidden hover:shadow-xl transition-shadow">
+         subscribe
         </Link>
         </button>
         <div className="my-8">
-          <h2 className="text-2xl font-bold text-white mb-4">Latest Blog Posts</h2>
+          <h2 className="text-2xl font-bold text-black mb-4">Latest Blog Posts</h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {posts.map((post) => (
               <Link
@@ -79,7 +80,7 @@ function Home() {
         </div>
 
         <div className="my-8">
-          <h2 className="text-xl font-semibold text-white mb-4">My Drawings</h2>
+          <h2 className="text-xl font-semibold text-slate-300 mb-4">My Drawings</h2>
           <DrawingSlideshow />
         </div>
 
@@ -88,6 +89,10 @@ function Home() {
           <EyeModel className='h-1/2' />
         </div>
         */}
+
+        <div>
+          <Footer />
+        </div>
       </div>
     </div>
   );

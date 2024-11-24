@@ -30,11 +30,11 @@ const DrawingSlideshow = () => {
     <div className="max-w-lg mx-auto">
       <Slider {...settings}>
         {drawings.map((drawing, index) => (
-          <div key={index} className="p-4">
+          <div key={index} className="w-full">
             <img
               src={drawing.imageUrl}
               alt={drawing.title}
-              className="w-full  object-cover rounded-lg shadow-md"
+              className="w-full object-cover rounded-lg shadow-md"
             />
             <h3 className="mt-2 text-center text-lg font-semibold">{drawing.title}</h3>
           </div>

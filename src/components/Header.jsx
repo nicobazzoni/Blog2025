@@ -62,9 +62,9 @@ function Header() {
           <Link to="/contact" className="block md:inline-block px-4 py-2 text-black hover:text-gray-300">
             Contact
           </Link> 
-          <Link to='/subscribe'className="block md:inline-block px-4 py-2 text-black hover:text-gray-300">
+          {/* <Link to='/subscribe'className="block md:inline-block px-4 py-2 text-black hover:text-gray-300">
           sub
-          </Link>
+          </Link> */}
           {/* Add more links as needed */}
         </nav>
       </div>
