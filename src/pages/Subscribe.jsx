@@ -14,12 +14,12 @@ function SubscribeForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include', // Send credentials (if needed)
         body: JSON.stringify({ name, email }),
       });
 
       if (response.ok) {
-        setMessage('Subscription successful! Check your email.');
+        const result = await response.json();
+        setMessage(`Subscription successful! ${result.message}`);
         setName('');
         setEmail('');
       } else {
@@ -29,25 +29,6 @@ function SubscribeForm() {
     } catch (error) {
       console.error('Error:', error);
       setMessage('An error occurred. Please try again.');
-    }
-  };
-
-  const handleUnsubscribe = async () => {
-    try {
-      const response = await fetch('https://nicosblog.com/pages/unsubscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: 'test@example.com' }), // Replace with actual email
-      });
-
-      if (response.ok) {
-        console.log('Unsubscribe successful!');
-      } else {
-        const errorText = await response.text();
-        console.error('Failed to unsubscribe:', errorText);
-      }
-    } catch (error) {
-      console.error('Error during unsubscribe:', error);
     }
   };
 
