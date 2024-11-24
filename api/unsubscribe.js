@@ -8,17 +8,6 @@ const client = sanityClient({
 });
 
 export default async function handler(req, res) {
-    // Set CORS headers for unsubscribe
-    res.setHeader('Access-Control-Allow-Origin', 'https://www.nicosblog.com');
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-
-    if (req.method === 'OPTIONS') {
-        // Handle preflight request
-        return res.status(200).end();
-    }
-
     if (req.method === 'POST') {
         const { email } = req.body;
 
