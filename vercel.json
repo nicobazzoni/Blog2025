@@ -15,11 +15,11 @@
   "rewrites": [
     {
       "source": "/backend/server",
-      "destination": "/api/backend/server"
+      "destination": "/backend/server"
     },
     {
-      "source": "/api/unsubscribe",
-      "destination": "/api/unsubscribe"
+      "source": "/pages/unsubscribe",
+      "destination": "/pages/unsubscribe"
     }
   ],
   "headers": [
