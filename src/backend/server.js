@@ -5,13 +5,14 @@ import nodemailer from 'nodemailer';
 import { createClient } from '@sanity/client';
 import dotenv from 'dotenv';
 
-dotenv.config(); // Load environment variables
+dotenv.config();
 
 const app = express();
 
-// Allow specific origins
+// Allowed Origins
 const allowedOrigins = ['https://nicosblog.com', 'https://www.nicosblog.com'];
 
+// CORS Setup
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -25,13 +26,8 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-// Handle preflight requests
-app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-  res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.sendStatus(204);
-});
+// Parse JSON
+app.use(bodyParser.json());
 
 // Middleware to log all requests
 app.use((req, res, next) => {
@@ -39,142 +35,57 @@ app.use((req, res, next) => {
   console.log('URL:', req.url);
   console.log('Method:', req.method);
   console.log('Origin:', req.headers.origin || 'Direct call (no origin)');
-  console.log('Headers:', req.headers);
   next();
 });
 
-// Parse incoming JSON payloads
-app.use(bodyParser.json());
-
+// Middleware for Redirects
 app.use((req, res, next) => {
-    const allowedHost = 'www.nicosblog.com';
-    const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
-  
-    // Redirect to the allowed host if necessary
-    if (req.hostname !== allowedHost) {
-      return res.redirect(301, `https://${allowedHost}${req.originalUrl}`);
-    }
-  
-    next();
-  });
-  app.use((req, res, next) => {
-    if (req.path.substr(-1) === '/' && req.path.length > 1) {
-      const query = req.url.slice(req.path.length);
-      res.redirect(301, req.path.slice(0, -1) + query);
-    } else {
-      next();
-    }
-  });
-  app.use((req, res, next) => {
-    const preferredDomain = 'www.nicosblog.com';
-  
-    // Redirect non-preferred domain
-    if (req.hostname !== preferredDomain) {
-      // Allow preflight requests to proceed before redirecting
-      if (req.method === 'OPTIONS') {
-        res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-        res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-        return res.status(204).end(); // End response for preflight
-      }
-  
-      // Redirect to preferred domain
-      return res.redirect(308, `https://${preferredDomain}${req.originalUrl}`);
-    }
-  
-    next();
-  });
+  const preferredDomain = 'www.nicosblog.com';
+  if (req.hostname !== preferredDomain) {
+    if (req.method === 'OPTIONS') return next(); // Skip redirects for OPTIONS
+    return res.redirect(308, `https://${preferredDomain}${req.originalUrl}`);
+  }
+  next();
+});
 
-// Configure Sanity Client
+// Configure Sanity
 const client = createClient({
-  projectId: process.env.SANITY_PROJECT_ID, // Your Sanity project ID
-  dataset: process.env.SANITY_DATASET || 'production', // Your Sanity dataset
-  useCdn: false, // Set to false for real-time data
-  token: process.env.SANITY_API_TOKEN, // API token with write permissions
+  projectId: process.env.SANITY_PROJECT_ID,
+  dataset: process.env.SANITY_DATASET || 'production',
+  useCdn: false,
+  token: process.env.SANITY_API_TOKEN,
   apiVersion: '2023-01-01',
 });
 
-// Configure Zoho Mail
+// Configure Nodemailer
 const transporter = nodemailer.createTransport({
   host: 'smtp.zoho.com',
   port: 465,
   secure: true,
   auth: {
-    user: process.env.ZOHO_EMAIL, // Zoho email address
-    pass: process.env.ZOHO_PASSWORD, // Zoho email password
+    user: process.env.ZOHO_EMAIL,
+    pass: process.env.ZOHO_PASSWORD,
   },
 });
 
 // Subscription Endpoint
 app.post('/backend/server', async (req, res) => {
   const { name, email } = req.body;
-
-  console.log('--- Subscription Request Received ---');
-  console.log('Name:', name);
-  console.log('Email:', email);
-
   try {
-    // Save subscriber to Sanity
-    const sanityResult = await client.create({
-      _type: 'subscriber',
-      name,
-      email,
-    });
-
-    console.log('Sanity Save Result:', sanityResult);
-
-    // Send Thank You Email
+    const sanityResult = await client.create({ _type: 'subscriber', name, email });
     const mailOptions = {
       from: `"Nico's Blog" <${process.env.ZOHO_EMAIL}>`,
       to: email,
-      subject: 'Welcome to Nico’s Blog!',
-      html: `
-        <p>Hi ${name},</p>
-        <p>Thank you for subscribing to my blog!</p>
-        <p>If you'd like to unsubscribe, click <a href="https://nicosblog.com/unsubscribe?email=${encodeURIComponent(email)}">here</a>.</p>
-      `,
+      subject: 'Welcome!',
+      html: `<p>Hi ${name}, thank you for subscribing!</p>`,
     };
-
-    const emailResult = await transporter.sendMail(mailOptions);
-    console.log('Email Sent Result:', emailResult);
-
-    res.status(200).send('Subscription successful!');
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ message: 'Subscription successful!' });
   } catch (error) {
-    console.error('Error in Subscription Process:', error.message);
-    res.status(500).send('Internal Server Error');
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-// Unsubscribe Endpoint
-app.post('/api/unsubscribe', async (req, res) => {
-  const { email } = req.body;
-
-  console.log('--- Unsubscribe Request Received ---');
-  console.log('Email:', email);
-
-  try {
-    // Find the subscriber by email
-    const query = `*[_type == "subscriber" && email == $email][0]`;
-    const subscriber = await client.fetch(query, { email });
-
-    if (!subscriber) {
-      console.error('Unsubscribe Error: Subscriber not found');
-      return res.status(404).send('Subscriber not found.');
-    }
-
-    // Delete the subscriber document
-    await client.delete(subscriber._id);
-    console.log(`Subscriber with email ${email} unsubscribed successfully.`);
-
-    res.status(200).send('Successfully unsubscribed.');
-  } catch (error) {
-    console.error('Error in Unsubscribe Process:', error.message);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
-// Start the Server
+// Start Server
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
