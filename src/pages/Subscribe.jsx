@@ -8,11 +8,12 @@ function SubscribeForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    const response = await fetch('https://nicosblog.com/backend/server', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email }),
-    });
+    try {
+      const response = await fetch('https://nicosblog.com/backend/server', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email }),
+      });
   
       if (response.ok) {
         setMessage('Subscription successful! Check your email.');
