@@ -1,9 +1,35 @@
 {
-    "rewrites": [
-      { "source": "/post/:slug", "destination": "/index.html" },
-      { "source": "/:path*", "destination": "/index.html" }
-    ]
-
-    
-  }
-  
+  "rewrites": [
+    { "source": "/post/:slug", "destination": "/index.html" },
+    { "source": "/:path*", "destination": "/index.html" }
+  ],
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        { "type": "host", "value": "nicosblog.com" }
+      ],
+      "destination": "https://www.nicosblog.com/:path*",
+      "statusCode": 308
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
+        }
+      ]
+    }
+  ]
+}
