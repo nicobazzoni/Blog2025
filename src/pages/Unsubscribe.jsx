@@ -6,11 +6,21 @@ function Unsubscribe() {
   const [message, setMessage] = useState('');
   const email = searchParams.get('email'); // Extract email from query string
 
+  useEffect(() => {
+    if (email) {
+      handleUnsubscribe();
+    } else {
+      setMessage('Invalid unsubscribe link.');
+    }
+  }, [email]);
+
   const handleUnsubscribe = async () => {
     try {
-      const response = await fetch('https://nicosblog.com/pages/unsubscribe', {
+      const response = await fetch('https://www.nicosblog.com/api/unsubscribe', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({ email }),
       });
 
@@ -26,19 +36,11 @@ function Unsubscribe() {
     }
   };
 
-  useEffect(() => {
-    if (email) {
-      handleUnsubscribe();
-    } else {
-      setMessage('Invalid unsubscribe link.');
-    }
-  }, [email]);
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
         <h2 className="text-xl font-bold text-gray-800 text-center mb-4">Unsubscribe</h2>
-        <p className="text-gray-600 text-center mb-6">{message}</p>
+        <p className="text-gray-600 text-center">{message}</p>
       </div>
     </div>
   );
