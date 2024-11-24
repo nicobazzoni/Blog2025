@@ -7,14 +7,14 @@ function SubscribeForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await fetch('https://nicosblog.com/backend/server', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email }),
       });
-  
+
       if (response.ok) {
         setMessage('Subscription successful! Check your email.');
         setName('');
@@ -28,18 +28,20 @@ function SubscribeForm() {
       setMessage('An error occurred. Please try again.');
     }
   };
+
   const handleUnsubscribe = async () => {
     try {
       const response = await fetch('https://nicosblog.com/api/unsubscribe', {
-        method: 'POST', // Ensure this matches your backend method
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: 'test@example.com' }), // Replace with actual email
       });
-  
+
       if (response.ok) {
         console.log('Unsubscribe successful!');
       } else {
-        console.error('Failed to unsubscribe:', await response.text());
+        const errorText = await response.text();
+        console.error('Failed to unsubscribe:', errorText);
       }
     } catch (error) {
       console.error('Error during unsubscribe:', error);
