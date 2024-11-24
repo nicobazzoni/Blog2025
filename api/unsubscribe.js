@@ -1,13 +1,14 @@
-import sanityClient from '@sanity/client';
-
-const client = sanityClient({
-  projectId: process.env.SANITY_PROJECT_ID,
-  dataset: process.env.SANITY_DATASET,
-  token: process.env.SANITY_API_TOKEN,
-  useCdn: false,
-});
-
 export default async function handler(req, res) {
+    res.setHeader('Access-Control-Allow-Origin', 'https://www.nicosblog.com'); // Allow your domain
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+    if (req.method === 'OPTIONS') {
+        // Preflight request
+        return res.status(200).end();
+    }
+
     if (req.method === 'POST' || req.method === 'GET') {
         const email = req.method === 'POST' ? req.body.email : req.query.email;
 
@@ -23,15 +24,15 @@ export default async function handler(req, res) {
             });
 
             if (result) {
-                res.status(200).json({ message: 'Unsubscribed successfully!' });
+                return res.status(200).json({ message: 'Unsubscribed successfully!' });
             } else {
-                res.status(404).json({ error: 'Subscriber not found' });
+                return res.status(404).json({ error: 'Subscriber not found' });
             }
         } catch (error) {
             console.error('Sanity error:', error);
-            res.status(500).json({ error: 'Failed to unsubscribe' });
+            return res.status(500).json({ error: 'Failed to unsubscribe' });
         }
     } else {
-        res.status(405).json({ error: 'Method Not Allowed' });
+        return res.status(405).json({ error: 'Method Not Allowed' });
     }
 }
