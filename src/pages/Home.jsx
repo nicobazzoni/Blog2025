@@ -83,11 +83,11 @@ function Home() {
           <DrawingSlideshow />
         </div>
 
-        <h1 className="text-xl mt-2 font-italic text-white mb-1">Interact</h1>
+        {/* <h1 className="text-xl mt-2 font-italic text-white mb-1">Interact</h1>
         <div style={{ height: "50vh", width: "100%" }}>
           <EyeModel className='h-1/2' />
         </div>
-       
+        */}
       </div>
     </div>
   );
