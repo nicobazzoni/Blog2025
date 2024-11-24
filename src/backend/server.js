@@ -7,6 +7,22 @@ import dotenv from 'dotenv';
 
 dotenv.config(); // Load environment variables
 
+import cors from 'cors';
+
+// Allow specific origins
+const allowedOrigins = ['https://nicosblog.com', 'https://www.nicosblog.com'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // Allow cookies and headers
+}));
+
 // Configure Sanity Client
 const client = createClient({
     projectId: process.env.SANITY_PROJECT_ID, // Your Sanity project ID
