@@ -3,7 +3,13 @@
     {
       "source": "https://nicosblog.com/:path*",
       "destination": "https://www.nicosblog.com/:path*",
-      "permanent": true
+      "permanent": true,
+      "has": [
+        {
+          "type": "host",
+          "value": "nicosblog.com"
+        }
+      ]
     }
   ],
   "rewrites": [
@@ -20,7 +26,7 @@
     {
       "source": "/api/(.*)",
       "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "https://nicosblog.com" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
         { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
         { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" },
         { "key": "Access-Control-Allow-Credentials", "value": "true" }
