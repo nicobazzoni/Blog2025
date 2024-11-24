@@ -9,7 +9,7 @@ dotenv.config(); // Load environment variables
 
 const app = express();
 
-// Allow CORS for specific origins dynamically
+// Allow specific origins
 const allowedOrigins = ['https://nicosblog.com', 'https://www.nicosblog.com'];
 
 app.use(cors({
@@ -20,50 +20,50 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true, // Allow cookies and credentials
-  methods: ['GET', 'POST', 'OPTIONS'], // Allow these HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
+  credentials: true,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-// Handle preflight requests explicitly
-app.use(cors({ origin: '*' }));
+app.options('*', cors()); // Handle preflight requests
 
-// Configure Sanity Client
+app.use(bodyParser.json());
+
+// Sanity client
 const client = createClient({
-  projectId: process.env.SANITY_PROJECT_ID, // Your Sanity project ID
-  dataset: process.env.SANITY_DATASET || 'production', // Your Sanity dataset
-  useCdn: false, // Set to false for real-time data
-  token: process.env.SANITY_API_TOKEN, // API token with write permissions
-  apiVersion: '2023-01-01', // Use a specific version (update as needed)
+  projectId: process.env.SANITY_PROJECT_ID,
+  dataset: process.env.SANITY_DATASET || 'production',
+  useCdn: false,
+  token: process.env.SANITY_API_TOKEN,
+  apiVersion: '2023-01-01',
 });
 
-// Configure Zoho Mail
+// Zoho Mail configuration
 const transporter = nodemailer.createTransport({
   host: 'smtp.zoho.com',
   port: 465,
-  secure: true, // Use SSL
+  secure: true,
   auth: {
-    user: process.env.ZOHO_EMAIL, // Zoho email address
-    pass: process.env.ZOHO_PASSWORD, // Zoho email password
+    user: process.env.ZOHO_EMAIL,
+    pass: process.env.ZOHO_PASSWORD,
   },
 });
 
-// Subscription Endpoint
+// Subscription endpoint
 app.post('/backend/server', async (req, res) => {
   const { name, email } = req.body;
 
   try {
     console.log('Received subscription request:', { name, email });
 
-    // Save subscriber to Sanity
     const sanityResult = await client.create({
       _type: 'subscriber',
       name,
       email,
     });
+
     console.log('Sanity save successful:', sanityResult);
 
-    // Send Thank You Email
     const mailOptions = {
       from: `"Nico's Blog" <${process.env.ZOHO_EMAIL}>`,
       to: email,
@@ -74,6 +74,7 @@ app.post('/backend/server', async (req, res) => {
         <p>If you'd like to unsubscribe, click <a href="https://nicosblog.com/unsubscribe?email=${encodeURIComponent(email)}">here</a>.</p>
       `,
     };
+
     const emailResult = await transporter.sendMail(mailOptions);
     console.log('Email sent successfully:', emailResult);
 
@@ -84,13 +85,13 @@ app.post('/backend/server', async (req, res) => {
   }
 });
 
+// Unsubscribe endpoint
 app.post('/api/unsubscribe', async (req, res) => {
-  const { email } = req.body; // Extract the email from the request body
+  const { email } = req.body;
 
   try {
     console.log(`Unsubscribe request received for: ${email}`);
 
-    // Find the subscriber by email
     const query = `*[_type == "subscriber" && email == $email][0]`;
     const subscriber = await client.fetch(query, { email });
 
@@ -98,18 +99,17 @@ app.post('/api/unsubscribe', async (req, res) => {
       return res.status(404).send('Subscriber not found.');
     }
 
-    // Delete the subscriber document
     await client.delete(subscriber._id);
     console.log(`Unsubscribed: ${email}`);
     res.status(200).send('Successfully unsubscribed.');
   } catch (error) {
     console.error('Error during unsubscribe:', error.message);
-    res.status(500).send('An error occurred while processing your request.');
+    res.status(500).send('Internal Server Error');
   }
 });
 
-// Start the Server
-const PORT = process.env.PORT || 5001; // Change to 5001 or another available port
+// Start the server
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
