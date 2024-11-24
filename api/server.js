@@ -42,8 +42,8 @@ export default async function handler(req, res) {
                 html: `
                     <p>Hi ${name},</p>
                     <p>Thank you for subscribing to Nico's Blog!</p>
-                    <p>We’re excited to have you with us. Stay tuned for updates and amazing content.</p>
-                    <p>Best regards,<br>Nico's Blog Team</p>
+                    <p>I'm excited to have you here. Stay tuned for updates and amazing content.</p>
+                    <p>Best regards,<br>Nico</p>
                 `,
             };
 
