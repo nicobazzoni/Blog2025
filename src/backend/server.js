@@ -25,45 +25,66 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-app.options('*', cors()); // Handle preflight requests
+// Handle preflight requests
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.sendStatus(204);
+});
 
+// Middleware to log all requests
+app.use((req, res, next) => {
+  console.log('--- New Request ---');
+  console.log('URL:', req.url);
+  console.log('Method:', req.method);
+  console.log('Origin:', req.headers.origin || 'Direct call (no origin)');
+  console.log('Headers:', req.headers);
+  next();
+});
+
+// Parse incoming JSON payloads
 app.use(bodyParser.json());
 
-// Sanity client
+// Configure Sanity Client
 const client = createClient({
-  projectId: process.env.SANITY_PROJECT_ID,
-  dataset: process.env.SANITY_DATASET || 'production',
-  useCdn: false,
-  token: process.env.SANITY_API_TOKEN,
+  projectId: process.env.SANITY_PROJECT_ID, // Your Sanity project ID
+  dataset: process.env.SANITY_DATASET || 'production', // Your Sanity dataset
+  useCdn: false, // Set to false for real-time data
+  token: process.env.SANITY_API_TOKEN, // API token with write permissions
   apiVersion: '2023-01-01',
 });
 
-// Zoho Mail configuration
+// Configure Zoho Mail
 const transporter = nodemailer.createTransport({
   host: 'smtp.zoho.com',
   port: 465,
   secure: true,
   auth: {
-    user: process.env.ZOHO_EMAIL,
-    pass: process.env.ZOHO_PASSWORD,
+    user: process.env.ZOHO_EMAIL, // Zoho email address
+    pass: process.env.ZOHO_PASSWORD, // Zoho email password
   },
 });
 
-// Subscription endpoint
+// Subscription Endpoint
 app.post('/backend/server', async (req, res) => {
   const { name, email } = req.body;
 
-  try {
-    console.log('Received subscription request:', { name, email });
+  console.log('--- Subscription Request Received ---');
+  console.log('Name:', name);
+  console.log('Email:', email);
 
+  try {
+    // Save subscriber to Sanity
     const sanityResult = await client.create({
       _type: 'subscriber',
       name,
       email,
     });
 
-    console.log('Sanity save successful:', sanityResult);
+    console.log('Sanity Save Result:', sanityResult);
 
+    // Send Thank You Email
     const mailOptions = {
       from: `"Nico's Blog" <${process.env.ZOHO_EMAIL}>`,
       to: email,
@@ -76,39 +97,44 @@ app.post('/backend/server', async (req, res) => {
     };
 
     const emailResult = await transporter.sendMail(mailOptions);
-    console.log('Email sent successfully:', emailResult);
+    console.log('Email Sent Result:', emailResult);
 
     res.status(200).send('Subscription successful!');
   } catch (error) {
-    console.error('Error in subscription process:', error.message);
+    console.error('Error in Subscription Process:', error.message);
     res.status(500).send('Internal Server Error');
   }
 });
 
-// Unsubscribe endpoint
+// Unsubscribe Endpoint
 app.post('/api/unsubscribe', async (req, res) => {
   const { email } = req.body;
 
-  try {
-    console.log(`Unsubscribe request received for: ${email}`);
+  console.log('--- Unsubscribe Request Received ---');
+  console.log('Email:', email);
 
+  try {
+    // Find the subscriber by email
     const query = `*[_type == "subscriber" && email == $email][0]`;
     const subscriber = await client.fetch(query, { email });
 
     if (!subscriber) {
+      console.error('Unsubscribe Error: Subscriber not found');
       return res.status(404).send('Subscriber not found.');
     }
 
+    // Delete the subscriber document
     await client.delete(subscriber._id);
-    console.log(`Unsubscribed: ${email}`);
+    console.log(`Subscriber with email ${email} unsubscribed successfully.`);
+
     res.status(200).send('Successfully unsubscribed.');
   } catch (error) {
-    console.error('Error during unsubscribe:', error.message);
+    console.error('Error in Unsubscribe Process:', error.message);
     res.status(500).send('Internal Server Error');
   }
 });
 
-// Start the server
+// Start the Server
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
