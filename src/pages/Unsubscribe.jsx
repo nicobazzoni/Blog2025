@@ -8,7 +8,7 @@ function Unsubscribe() {
 
   const handleUnsubscribe = async () => {
     try {
-      const response = await fetch('https://nicosblog.com/api/unsubscribe', {
+      const response = await fetch('https://nicosblog.com/pages/unsubscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

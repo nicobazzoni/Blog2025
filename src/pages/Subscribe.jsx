@@ -9,7 +9,7 @@ function SubscribeForm() {
     e.preventDefault();
 
     try {
-      const response = await fetch('https://www.nicosblog.com/backend/server', {
+      const response = await fetch('https://www.nicosblog.com/api/server', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ function SubscribeForm() {
 
   const handleUnsubscribe = async () => {
     try {
-      const response = await fetch('https://nicosblog.com/api/unsubscribe', {
+      const response = await fetch('https://nicosblog.com/pages/unsubscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: 'test@example.com' }), // Replace with actual email

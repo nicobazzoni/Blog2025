@@ -1,27 +1,4 @@
 {
-  "redirects": [
-    {
-      "source": "https://nicosblog.com/:path*",
-      "destination": "https://www.nicosblog.com/:path*",
-      "permanent": true,
-      "has": [
-        {
-          "type": "host",
-          "value": "nicosblog.com"
-        }
-      ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/backend/server",
-      "destination": "/backend/server"
-    },
-    {
-      "source": "/pages/unsubscribe",
-      "destination": "/pages/unsubscribe"
-    }
-  ],
   "headers": [
     {
       "source": "/api/(.*)",
