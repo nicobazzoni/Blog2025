@@ -22,7 +22,7 @@
   ],
   "redirects": [
     {
-      "source": "/(.*)",
+      "source": "https://nicosblog.com/:path*",
       "destination": "https://www.nicosblog.com/:path*",
       "statusCode": 308
     }
