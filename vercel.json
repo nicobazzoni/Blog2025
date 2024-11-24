@@ -1,18 +1,11 @@
 {
   "rewrites": [
-    {
-      "source": "/backend/server",
-      "destination": "/api/backend/server"
-    },
-    {
-      "source": "/api/unsubscribe",
-      "destination": "/api/unsubscribe"
-    }
+    { "source": "/backend/server", "destination": "/api/backend/server" },
+    { "source": "/api/unsubscribe", "destination": "/api/unsubscribe" }
   ],
   "redirects": [
     {
       "source": "/(.*)",
-      "has": [{ "type": "host", "value": "nicosblog.com" }],
       "destination": "https://www.nicosblog.com/:path*",
       "statusCode": 308
     }
