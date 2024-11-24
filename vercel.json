@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "https://nicosblog.com/:path*",
+      "destination": "https://www.nicosblog.com/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/backend/server",
