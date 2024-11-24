@@ -34,6 +34,9 @@ export default async function handler(req, res) {
                 email,
             });
 
+            // Create the unsubscribe link
+            const unsubscribeLink = `https://www.nicosblog.com/unsubscribe?email=${encodeURIComponent(email)}`;
+
             // Send a confirmation email
             const mailOptions = {
                 from: `"Nico's Blog" <${process.env.ZOHO_EMAIL}>`, // Sender address
@@ -43,6 +46,8 @@ export default async function handler(req, res) {
                     <p>Hi ${name},</p>
                     <p>Thank you for subscribing to Nico's Blog!</p>
                     <p>I'm excited to have you here. Stay tuned for updates and amazing content.</p>
+                    <p>If you wish to unsubscribe, click the link below:</p>
+                    <p><a href="${unsubscribeLink}">Unsubscribe</a></p>
                     <p>Best regards,<br>Nico</p>
                 `,
             };
