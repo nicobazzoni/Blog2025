@@ -10,9 +10,7 @@ dotenv.config(); // Load environment variables
 const app = express();
 
 // Allow CORS for specific origins dynamically
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',')
-  : ['https://nicosblog.com', 'https://www.nicosblog.com'];
+const allowedOrigins = ['https://nicosblog.com', 'https://www.nicosblog.com'];
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -22,9 +20,9 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true, // Allow cookies and authorization headers
-  methods: ['GET', 'POST', 'OPTIONS'], // Allow specific methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
+  credentials: true, // Allow cookies and credentials
+  methods: ['GET', 'POST', 'OPTIONS'], // Allow these HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
 }));
 
 // Handle preflight requests explicitly
